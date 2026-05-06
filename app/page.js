@@ -3,7 +3,14 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/authcontext";
 import { auth, db } from "@/firebase/firebase";
-import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, signOut } from "firebase/auth";
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signInWithRedirect,
+  signOut,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import {
   collection,
   addDoc,
@@ -13,6 +20,7 @@ import {
   onSnapshot,
   orderBy,
   query,
+  where,
 } from "firebase/firestore";
 
 export default function Home() {
@@ -32,7 +40,12 @@ export default function Home() {
   useEffect(() => {
     if (!user) return;
 
-    const tasksQuery = query(collection(db, "tasks"), orderBy("createdAt", "desc"));
+    const tasksQuery = query(
+      collection(db, "tasks"),
+      where("userId", "==", user.uid),
+      orderBy("createdAt", "desc")
+    );
+
     const unsubscribe = onSnapshot(
       tasksQuery,
       (snapshot) => {
@@ -100,6 +113,8 @@ export default function Home() {
 
     try {
       await addDoc(collection(db, "tasks"), {
+        userId: user.uid,
+        userEmail: user.email,
         task: taskTitle,
         subject,
         deadline,
