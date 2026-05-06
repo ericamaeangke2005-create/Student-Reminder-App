@@ -1,11 +1,5 @@
-import { useEffect, useState } from "react";
+import { NextResponse } from "next/server";
 
-export default function Home() {
-  const [name, setName] = useState("");
-
-  return (
-    <div>
-      <h1>Welcome {name ? name : "Guest"}</h1>
-    </div>
-  );
+export async function GET() {
+  return NextResponse.json({ message: "Hello from API" });
 }
