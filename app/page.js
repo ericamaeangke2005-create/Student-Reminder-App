@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/authcontext";
 import { auth, db } from "@/firebase/firebase";
-import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
+import { GoogleAuthProvider, signInWithPopup, signInWithRedirect, signOut } from "firebase/auth";
 import {
   collection,
   addDoc,
@@ -59,8 +59,14 @@ export default function Home() {
   const handleLogin = async () => {
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      showNotification("Signed in successfully.", "success");
+      const isMobile = /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent);
+
+      if (isMobile) {
+        await signInWithRedirect(auth, provider);
+      } else {
+        await signInWithPopup(auth, provider);
+        showNotification("Signed in successfully.", "success");
+      }
     } catch (error) {
       console.error("Login failed", error);
       showNotification(`Login failed: ${error.message}`, "error");
