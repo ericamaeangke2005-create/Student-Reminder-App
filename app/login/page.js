@@ -18,12 +18,12 @@ export default function Login() {
   }, [user, loading, router]);
 
   const login = async () => {
-    setStatus("Signing in...");
+    setStatus("Signing in..");
 
     try {
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider);
-      setStatus("Login successful. Redirecting..");
+      setStatus("Login successful. Redirecting...");
     } catch (error) {
       console.error("Login error:", error);
       setStatus(`Login failed: ${error.message}`);
