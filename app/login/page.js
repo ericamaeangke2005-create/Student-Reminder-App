@@ -36,7 +36,7 @@ export default function Login() {
         <button onClick={login} className="bg-blue-500 px-6 py-3 rounded">
           Login with Google
         </button>
-        <p>{loading ? "Checking authentication..." : status}</p>
+        <p>{loading ? "Checking authentication.." : status}</p>
         {!loading && user && <p>Already signed in. Redirecting...</p>}
       </div>
     </div>
